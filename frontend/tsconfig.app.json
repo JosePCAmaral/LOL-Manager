@@ -3,6 +3,7 @@
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "rootDir": "./src",
+    "ignoreDeprecations": "5.0",
     "types": []
   },
   "files": ["src/main.ts"],

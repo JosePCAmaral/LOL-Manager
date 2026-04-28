@@ -1,0 +1,45 @@
+<main class="page">
+  <section class="frame">
+    <header class="hero">
+      <p class="eyebrow">LOL Manager</p>
+      <h1>Ambiente Docker para NestJS, Angular e MySQL</h1>
+      <p class="subtitle">
+        O backend roda em <strong>3002</strong>, o frontend em <strong>40202</strong> e o MySQL em
+        <strong>3309</strong>. O frontend consulta a API via proxy e a API valida a conexão com o banco.
+      </p>
+
+      <div class="status-row">
+        <span class="status-pill">
+          <span class="status-dot" [class.ok]="!loading && apiOk" [class.error]="!loading && !apiOk"></span>
+          Backend: {{ apiLabel }}
+        </span>
+        <span class="status-pill">
+          <span class="status-dot" [class.ok]="!loading && dbOk" [class.error]="!loading && !dbOk"></span>
+          MySQL: {{ dbLabel }}
+        </span>
+      </div>
+
+      <div class="actions">
+        <button type="button" (click)="refresh()" [disabled]="loading">
+          {{ loading ? 'Atualizando...' : 'Atualizar status' }}
+        </button>
+      </div>
+
+      <div class="notice" *ngIf="error">
+        {{ error }}
+      </div>
+    </header>
+
+    <section class="grid">
+      <article class="panel">
+        <h2>Resposta da API</h2>
+        <pre>{{ apiJson }}</pre>
+      </article>
+
+      <article class="panel">
+        <h2>Checagem do banco</h2>
+        <pre>{{ dbJson }}</pre>
+      </article>
+    </section>
+  </section>
+</main>

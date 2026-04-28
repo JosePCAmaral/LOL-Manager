@@ -27,6 +27,22 @@ export class League {
   @Column({ nullable: true, type: 'int' })
   financialPower?: number;
 
+  @ApiProperty({ required: false })
+  @Column({ nullable: true })
+  code?: string;
+
+  @ApiProperty({ required: false })
+  @Column({ nullable: true })
+  region?: string;
+
+  @ApiProperty({ required: false })
+  @Column({ type: 'int', nullable: true })
+  totalTeams?: number;
+
+  @ApiProperty({ required: false })
+  @Column({ default: true })
+  isActive?: boolean;
+
   constructor(partial?: Partial<League>) {
     if (partial) Object.assign(this, partial);
   }

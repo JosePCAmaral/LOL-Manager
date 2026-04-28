@@ -1,37 +1,40 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { Team } from './team.entity';
 
 @Injectable()
 export class TeamService {
-  private items = new Map<number, Team>();
-  private nextId = 1;
+  constructor(
+    @InjectRepository(Team)
+    private readonly repo: Repository<Team>,
+  ) {}
 
-  findAll(): Team[] {
-    return Array.from(this.items.values());
+  async findAll(): Promise<Team[]> {
+    return this.repo.find();
   }
 
-  findOne(id: number): Team {
-    const it = this.items.get(id);
+  async findOne(id: number): Promise<Team> {
+    const it = await this.repo.findOneBy({ id });
     if (!it) throw new NotFoundException('Team not found');
     return it;
   }
 
-  create(dto: Partial<Team>): Team {
-    const id = this.nextId++;
-    const ent = new Team({ id, ...dto });
-    this.items.set(id, ent);
-    return ent;
+  async create(dto: Partial<Team>): Promise<Team> {
+    const ent = this.repo.create(dto as any);
+    const saved = await this.repo.save(ent as any);
+    return saved as Team;
   }
 
-  update(id: number, dto: Partial<Team>): Team {
-    const it = this.findOne(id);
+  async update(id: number, dto: Partial<Team>): Promise<Team> {
+    const it = await this.findOne(id);
     Object.assign(it, dto);
-    this.items.set(id, it);
-    return it;
+    const saved = await this.repo.save(it as any);
+    return saved as Team;
   }
 
-  remove(id: number): void {
-    this.findOne(id);
-    this.items.delete(id);
+  async remove(id: number): Promise<void> {
+    const res = await this.repo.delete(id);
+    if (res.affected === 0) throw new NotFoundException('Team not found');
   }
 }

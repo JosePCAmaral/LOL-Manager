@@ -41,7 +41,7 @@ services:
     depends_on:
       mysql:
         condition: service_healthy
-    command: npx ts-node src/main.ts
+    command: sh -c "npm install && npx ts-node src/main.ts"
 
   frontend:
     build:

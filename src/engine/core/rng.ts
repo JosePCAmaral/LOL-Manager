@@ -17,6 +17,12 @@ function djb2Hash(str: string): number {
 }
 
 /**
+ * A seeded RNG instance — a stateful function that returns floats in [0, 1).
+ * All engine modules should type their RNG parameter as SeededRng.
+ */
+export type SeededRng = () => number
+
+/**
  * Returns a stateful PRNG function seeded from the given string.
  * Each call to the returned function advances the internal state and produces
  * a float in [0, 1).
